@@ -20,14 +20,13 @@ const App = () => (
       <Toaster />
       <Sonner position="top-right" expand={true} closeButton={true} />
       <BrowserRouter>
+        <Carrito />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/categoria/:categoryId" element={<Categoria />} />
           <Route path="/producto/:productId" element={<ProductoDetalle />} />
-          <Route path="/carrito" element={<Carrito />} />
           <Route path="/ofertas" element={<Ofertas />} />
           <Route path="/productos" element={<Productos />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

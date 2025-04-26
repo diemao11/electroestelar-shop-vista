@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, ArrowLeft, Plus, Minus, Tag } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { ShoppingCart, Tag, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Producto {
@@ -23,49 +24,39 @@ const ProductoDetalle = () => {
   const [producto, setProducto] = useState<Producto | null>(null);
   const [cantidad, setCantidad] = useState(1);
   const [imagenActiva, setImagenActiva] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Simulamos la obtención de un producto desde una API
     const obtenerProducto = () => {
-      setLoading(true);
-      
       // Este sería reemplazado por una llamada a API real
       setTimeout(() => {
-        // Producto simulado
         const productoEncontrado: Producto = {
           id: parseInt(productId || '1'),
-          nombre: 'Smart TV 55" QLED 4K',
-          precio: 2899900,
+          nombre: 'Organizador Maquillaje Maletín Con Espejo',
+          precio: 104999,
           imagenes: [
             'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
             'https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
             'https://images.unsplash.com/photo-1558888401-3cc1de77652d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3'
           ],
-          categoria: 'electrodomesticos',
-          descripcion: 'Televisor QLED de última generación con pantalla de 55 pulgadas, resolución 4K UHD y tecnología de color cuántico para una reproducción precisa y vibrante del color. Smart TV con sistema operativo integrado para acceder fácilmente a tus aplicaciones de streaming favoritas.',
+          categoria: 'Maquillaje',
+          descripcion: 'Bolsa de Cosmeticos Profesional con Divisiones y Espejo LED - Todo en un Solo Lugar',
           especificaciones: {
-            'Tamaño de pantalla': '55 pulgadas',
-            'Resolución': '4K UHD (3840 x 2160)',
-            'Tecnología': 'QLED',
-            'Puertos HDMI': '4',
-            'Puertos USB': '2',
-            'Conectividad': 'WiFi, Bluetooth',
-            'Sonido': 'Dolby Atmos 2.1ch',
-            'Asistentes de voz': 'Alexa, Google Assistant',
-            'Garantía': '1 año'
+            'Material': 'Cuero sintético de alta calidad',
+            'Dimensiones': '30 x 25 x 15 cm',
+            'Peso': '1.2 kg',
+            'Características': 'Espejo LED incorporado',
+            'Garantía': '30 Días',
           }
         };
         
         setProducto(productoEncontrado);
-        setLoading(false);
       }, 500);
     };
     
     obtenerProducto();
   }, [productId]);
 
-  // Formatear precio en COP
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
@@ -74,48 +65,30 @@ const ProductoDetalle = () => {
     }).format(price);
   };
 
-  // Cambiar cantidad
-  const cambiarCantidad = (change: number) => {
-    const nuevaCantidad = cantidad + change;
-    if (nuevaCantidad >= 1) {
-      setCantidad(nuevaCantidad);
+  const updateCantidad = (change: number) => {
+    const newCantidad = cantidad + change;
+    if (newCantidad >= 1) {
+      setCantidad(newCantidad);
     }
   };
 
-  // Agregar al carrito
   const agregarAlCarrito = () => {
     toast.success(`${producto?.nombre} agregado al carrito`, {
       description: `Cantidad: ${cantidad}`
     });
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen">
-        <Navbar />
-        <main className="pt-24 pb-16 container-custom">
-          <div className="flex flex-col items-center justify-center h-64">
-            <div className="animate-pulse rounded-md bg-gray-200 h-8 w-48 mb-4"></div>
-            <div className="animate-pulse rounded-md bg-gray-200 h-4 w-96 mb-2"></div>
-            <div className="animate-pulse rounded-md bg-gray-200 h-4 w-80"></div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
   if (!producto) {
     return (
       <div className="min-h-screen">
         <Navbar />
         <main className="pt-24 pb-16 container-custom">
-          <div className="text-center py-16">
-            <h2 className="text-2xl font-semibold mb-4">Producto no encontrado</h2>
-            <p className="text-gray-600 mb-8">Lo sentimos, el producto que buscas no existe.</p>
-            <Button asChild>
-              <Link to="/productos">Ver todos los productos</Link>
-            </Button>
+          <div className="animate-pulse space-y-8">
+            <div className="h-96 bg-gray-200 rounded-lg"></div>
+            <div className="space-y-4">
+              <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
           </div>
         </main>
         <Footer />
@@ -129,23 +102,14 @@ const ProductoDetalle = () => {
       
       <main className="pt-24 pb-16">
         <div className="container-custom">
-          {/* Breadcrumb */}
-          <div className="mb-8">
-            <Link to="/productos" className="text-purple-600 hover:text-purple-800 inline-flex items-center">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Volver a productos
-            </Link>
-          </div>
-          
-          {/* Producto detalle */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Galería de imágenes */}
             <div>
-              <div className="aspect-square overflow-hidden rounded-lg mb-4">
+              <div className="aspect-square mb-4 bg-white rounded-lg overflow-hidden">
                 <img 
                   src={producto.imagenes[imagenActiva]} 
                   alt={producto.nombre} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
               
@@ -155,7 +119,8 @@ const ProductoDetalle = () => {
                     <button 
                       key={index}
                       onClick={() => setImagenActiva(index)}
-                      className={`aspect-square rounded-md overflow-hidden border-2 ${index === imagenActiva ? 'border-purple-600' : 'border-transparent'}`}
+                      className={`aspect-square rounded-lg overflow-hidden border-2 
+                        ${index === imagenActiva ? 'border-purple-600' : 'border-transparent'}`}
                     >
                       <img 
                         src={imagen} 
@@ -170,39 +135,39 @@ const ProductoDetalle = () => {
             
             {/* Información del producto */}
             <div>
-              <div className="flex items-center mb-2">
-                <Tag className="h-4 w-4 mr-1 text-gray-500" />
-                <span className="text-gray-500 capitalize">{producto.categoria}</span>
+              <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                <Tag className="h-4 w-4" />
+                <span className="capitalize">{producto.categoria}</span>
               </div>
               
               <h1 className="text-3xl font-bold mb-4">{producto.nombre}</h1>
-              <p className="text-2xl font-bold text-purple-600 mb-6">
-                {formatPrice(producto.precio)}
-              </p>
               
-              <div className="mb-8">
-                <h3 className="font-medium mb-2">Descripción</h3>
-                <p className="text-gray-600">{producto.descripcion}</p>
+              <div className="flex items-baseline gap-4 mb-6">
+                <span className="text-3xl font-bold text-purple-600">
+                  {formatPrice(producto.precio)}
+                </span>
               </div>
+
+              <p className="text-gray-600 mb-8">{producto.descripcion}</p>
               
-              <div className="border-t border-b py-6 mb-6">
-                <div className="flex items-center justify-between mb-4">
+              <Card className="p-6 mb-8">
+                <div className="flex items-center justify-between mb-6">
                   <span className="font-medium">Cantidad</span>
-                  <div className="flex items-center border rounded">
+                  <div className="flex items-center border rounded-md">
                     <Button 
                       variant="ghost" 
-                      size="icon" 
-                      className="h-10 w-10 rounded-none"
-                      onClick={() => cambiarCantidad(-1)}
+                      size="icon"
+                      className="h-10 w-10"
+                      onClick={() => updateCantidad(-1)}
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
-                    <span className="w-12 text-center">{cantidad}</span>
+                    <span className="w-12 text-center text-lg">{cantidad}</span>
                     <Button 
                       variant="ghost" 
-                      size="icon" 
-                      className="h-10 w-10 rounded-none"
-                      onClick={() => cambiarCantidad(1)}
+                      size="icon"
+                      className="h-10 w-10"
+                      onClick={() => updateCantidad(1)}
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
@@ -216,11 +181,18 @@ const ProductoDetalle = () => {
                   <ShoppingCart className="h-5 w-5 mr-2" />
                   Agregar al carrito
                 </Button>
-              </div>
+                
+                <Button 
+                  variant="outline"
+                  className="w-full text-lg py-6"
+                  onClick={() => agregarAlCarrito()}
+                >
+                  Comprar ahora
+                </Button>
+              </Card>
               
-              {/* Especificaciones */}
               <div>
-                <h3 className="font-semibold mb-3">Especificaciones</h3>
+                <h3 className="font-semibold mb-4">Especificaciones</h3>
                 <div className="space-y-2">
                   {Object.entries(producto.especificaciones).map(([key, value]) => (
                     <div key={key} className="flex py-2 border-b last:border-0">
