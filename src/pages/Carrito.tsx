@@ -1,12 +1,12 @@
-
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Trash, Plus, Minus, X } from 'lucide-react';
+import { ShoppingCart, Trash, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Carrito = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState([
     {
@@ -53,6 +53,11 @@ const Carrito = () => {
   const removeItem = (id: number) => {
     setItems(prevItems => prevItems.filter(item => item.id !== id));
     toast.success('Producto eliminado del carrito');
+  };
+
+  const handleCheckout = () => {
+    setIsOpen(false);
+    navigate('/carrito');
   };
 
   return (
@@ -167,11 +172,12 @@ const Carrito = () => {
                   >
                     Seguir comprando
                   </Button>
-                  <Link to="/checkout" className="flex-1">
-                    <Button className="w-full">
-                      Continuar con la compra
-                    </Button>
-                  </Link>
+                  <Button 
+                    className="flex-1"
+                    onClick={handleCheckout}
+                  >
+                    Continuar con la compra
+                  </Button>
                 </div>
 
                 <div className="space-y-3 pt-4">
