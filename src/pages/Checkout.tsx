@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -8,8 +7,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ArrowLeft, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const Checkout = () => {
+  const [showShippingForm, setShowShippingForm] = useState(false);
+
   const cartItems = [
     {
       id: 1,
@@ -111,9 +113,66 @@ const Checkout = () => {
               <h2 className="text-lg font-semibold">Datos de envío</h2>
             </div>
             
-            <Button variant="outline" className="w-full">
-              Agregar dirección de envío
-            </Button>
+            {!showShippingForm ? (
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setShowShippingForm(true)}
+              >
+                Agregar dirección de envío
+              </Button>
+            ) : (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="department">Departamento</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar departamento" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="antioquia">Antioquia</SelectItem>
+                        <SelectItem value="cundinamarca">Cundinamarca</SelectItem>
+                        <SelectItem value="valle">Valle del Cauca</SelectItem>
+                        <SelectItem value="atlantico">Atlántico</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="city">Ciudad</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar ciudad" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="medellin">Medellín</SelectItem>
+                        <SelectItem value="bogota">Bogotá</SelectItem>
+                        <SelectItem value="cali">Cali</SelectItem>
+                        <SelectItem value="barranquilla">Barranquilla</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="address">Dirección de envío</Label>
+                  <Input 
+                    type="text" 
+                    id="address" 
+                    placeholder="Ej: Calle 123 # 45-67 Apto 890"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="additional">Información adicional (opcional)</Label>
+                  <Input 
+                    type="text" 
+                    id="additional" 
+                    placeholder="Ej: Casa color blanco, cerca al parque"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Payment Methods */}
