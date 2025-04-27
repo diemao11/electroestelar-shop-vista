@@ -3,6 +3,7 @@ import React from 'react';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -85,11 +86,13 @@ const FeaturedProducts = () => {
           {featuredProducts.map((product) => (
             <div key={product.id} className="product-card group h-full flex flex-col">
               <div className="relative overflow-hidden">
-                <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+                <Link to={`/producto/${product.id}`}>
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </Link>
                 <div className="absolute top-0 right-0 m-4 flex flex-col gap-2">
                   <Button
                     variant="outline"
@@ -119,9 +122,11 @@ const FeaturedProducts = () => {
                 <span className="text-xs text-estelar-gray uppercase tracking-wider mb-1">
                   {product.category}
                 </span>
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-estelar-purple transition-colors duration-300">
-                  {product.name}
-                </h3>
+                <Link to={`/producto/${product.id}`} className="group-hover:text-estelar-purple transition-colors duration-300">
+                  <h3 className="font-semibold text-lg mb-2">
+                    {product.name}
+                  </h3>
+                </Link>
                 
                 <div className="flex items-center mt-auto">
                   <div className="flex-1">

@@ -83,6 +83,10 @@ const Ofertas = () => {
     }).format(price);
   };
 
+  const handleAddToCart = (nombre: string) => {
+    toast.success(`${nombre} agregado al carrito`);
+  };
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -126,14 +130,16 @@ const Ofertas = () => {
                 className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="relative">
-                  <img 
-                    src={oferta.imagen} 
-                    alt={oferta.nombre} 
-                    className="w-full h-60 object-cover"
-                  />
-                  <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full font-medium">
-                    -{oferta.descuento}%
-                  </div>
+                  <Link to={`/producto/${oferta.id}`}>
+                    <img 
+                      src={oferta.imagen} 
+                      alt={oferta.nombre} 
+                      className="w-full h-60 object-cover"
+                    />
+                    <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full font-medium">
+                      -{oferta.descuento}%
+                    </div>
+                  </Link>
                 </div>
                 <div className="p-5">
                   <Link to={`/producto/${oferta.id}`} className="hover:text-purple-600 transition-colors">
@@ -151,7 +157,7 @@ const Ofertas = () => {
                     <Tag className="h-4 w-4 mr-1" />
                     <span className="capitalize">{oferta.categoria}</span>
                   </div>
-                  <Button className="w-full">
+                  <Button className="w-full" onClick={() => handleAddToCart(oferta.nombre)}>
                     Agregar al carrito
                   </Button>
                 </div>

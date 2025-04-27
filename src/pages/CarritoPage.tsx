@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -40,13 +41,17 @@ const CarritoPage = () => {
         <div className="lg:col-span-2 space-y-6">
           {items.map((item) => (
             <div key={item.id} className="flex gap-4 bg-white rounded-lg p-4 shadow-sm">
-              <img
-                src={item.imagen}
-                alt={item.nombre}
-                className="w-24 h-24 object-cover rounded"
-              />
+              <Link to={`/producto/${item.id}`}>
+                <img
+                  src={item.imagen}
+                  alt={item.nombre}
+                  className="w-24 h-24 object-cover rounded"
+                />
+              </Link>
               <div className="flex-grow">
-                <h3 className="font-medium">{item.nombre}</h3>
+                <Link to={`/producto/${item.id}`}>
+                  <h3 className="font-medium hover:text-estelar-purple">{item.nombre}</h3>
+                </Link>
                 <p className="text-lg font-bold text-estelar-purple mt-1">
                   {formatPrice(item.precio)}
                 </p>
