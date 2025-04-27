@@ -1,32 +1,19 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, Trash, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '@/context/CartContext';
 
 const Carrito = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      nombre: 'Audífonos Bluetooth 3A',
-      precio: 412000,
-      imagen: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
-      cantidad: 1
-    },
-    {
-      id: 5,
-      nombre: 'Organizador Maquillaje Modern Con Espejo',
-      precio: 204999,
-      imagen: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
-      cantidad: 2
-    }
-  ]);
+  const { items, updateQuantity, removeItem } = useCart();
 
   const subtotal = items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-  const descuento = 210000;
+  const descuento = items.length > 0 ? 210000 : 0;
   const total = subtotal - descuento;
 
   const formatPrice = (price: number) => {
@@ -37,21 +24,8 @@ const Carrito = () => {
     }).format(price);
   };
 
-  const updateQuantity = (id: number, change: number) => {
-    setItems(prevItems => 
-      prevItems.map(item => {
-        if (item.id === id) {
-          const newQuantity = item.cantidad + change;
-          if (newQuantity < 1) return item;
-          return {...item, cantidad: newQuantity};
-        }
-        return item;
-      })
-    );
-  };
-
-  const removeItem = (id: number) => {
-    setItems(prevItems => prevItems.filter(item => item.id !== id));
+  const handleRemoveItem = (id: number) => {
+    removeItem(id);
     toast.success('Producto eliminado del carrito');
   };
 
@@ -125,7 +99,7 @@ const Carrito = () => {
                             variant="ghost"
                             size="sm"
                             className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => handleRemoveItem(item.id)}
                           >
                             <Trash className="h-4 w-4" />
                           </Button>

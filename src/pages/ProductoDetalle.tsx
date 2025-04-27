@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ShoppingCart, Tag, Plus, Minus } from 'lucide-react';
 import { toast } from 'sonner';
+import { useCart } from '@/context/CartContext';
 
 interface Producto {
   id: number;
@@ -24,6 +24,8 @@ const ProductoDetalle = () => {
   const [producto, setProducto] = useState<Producto | null>(null);
   const [cantidad, setCantidad] = useState(1);
   const [imagenActiva, setImagenActiva] = useState(0);
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulamos la obtención de un producto desde una API
@@ -73,9 +75,37 @@ const ProductoDetalle = () => {
   };
 
   const agregarAlCarrito = () => {
-    toast.success(`${producto?.nombre} agregado al carrito`, {
-      description: `Cantidad: ${cantidad}`
-    });
+    if (producto) {
+      addToCart({
+        id: producto.id,
+        nombre: producto.nombre,
+        precio: producto.precio,
+        imagen: producto.imagenes[0],
+        cantidad: cantidad
+      });
+      
+      toast.success(`${producto.nombre} agregado al carrito`, {
+        description: `Cantidad: ${cantidad}`
+      });
+      
+      // Navigate to cart page
+      navigate('/carrito');
+    }
+  };
+
+  const comprarAhora = () => {
+    if (producto) {
+      addToCart({
+        id: producto.id,
+        nombre: producto.nombre,
+        precio: producto.precio,
+        imagen: producto.imagenes[0],
+        cantidad: cantidad
+      });
+      
+      // Navigate directly to checkout
+      navigate('/checkout');
+    }
   };
 
   if (!producto) {
@@ -107,13 +137,13 @@ const ProductoDetalle = () => {
             <div>
               <div className="aspect-square mb-4 bg-white rounded-lg overflow-hidden">
                 <img 
-                  src={producto.imagenes[imagenActiva]} 
-                  alt={producto.nombre} 
+                  src={producto?.imagenes[imagenActiva]} 
+                  alt={producto?.nombre} 
                   className="w-full h-full object-contain"
                 />
               </div>
               
-              {producto.imagenes.length > 1 && (
+              {producto?.imagenes.length > 1 && (
                 <div className="grid grid-cols-4 gap-4">
                   {producto.imagenes.map((imagen, index) => (
                     <button 
@@ -137,18 +167,18 @@ const ProductoDetalle = () => {
             <div>
               <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
                 <Tag className="h-4 w-4" />
-                <span className="capitalize">{producto.categoria}</span>
+                <span className="capitalize">{producto?.categoria}</span>
               </div>
               
-              <h1 className="text-3xl font-bold mb-4">{producto.nombre}</h1>
+              <h1 className="text-3xl font-bold mb-4">{producto?.nombre}</h1>
               
               <div className="flex items-baseline gap-4 mb-6">
                 <span className="text-3xl font-bold text-purple-600">
-                  {formatPrice(producto.precio)}
+                  {producto ? formatPrice(producto.precio) : ''}
                 </span>
               </div>
 
-              <p className="text-gray-600 mb-8">{producto.descripcion}</p>
+              <p className="text-gray-600 mb-8">{producto?.descripcion}</p>
               
               <Card className="p-6 mb-8">
                 <div className="flex items-center justify-between mb-6">
@@ -185,7 +215,7 @@ const ProductoDetalle = () => {
                 <Button 
                   variant="outline"
                   className="w-full text-lg py-6"
-                  onClick={() => agregarAlCarrito()}
+                  onClick={comprarAhora}
                 >
                   Comprar ahora
                 </Button>
@@ -194,7 +224,7 @@ const ProductoDetalle = () => {
               <div>
                 <h3 className="font-semibold mb-4">Especificaciones</h3>
                 <div className="space-y-2">
-                  {Object.entries(producto.especificaciones).map(([key, value]) => (
+                  {producto && Object.entries(producto.especificaciones).map(([key, value]) => (
                     <div key={key} className="flex py-2 border-b last:border-0">
                       <span className="font-medium w-1/3">{key}</span>
                       <span className="text-gray-600 w-2/3">{value}</span>

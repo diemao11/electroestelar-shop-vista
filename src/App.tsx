@@ -13,27 +13,30 @@ import Categoria from "./pages/Categoria";
 import ProductoDetalle from "./pages/ProductoDetalle";
 import CarritoPage from "./pages/CarritoPage";
 import Checkout from "./pages/Checkout";
+import { CartProvider } from "./context/CartContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner position="top-right" expand={true} closeButton={true} />
-      <BrowserRouter>
-        <Carrito />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/categoria/:categoryId" element={<Categoria />} />
-          <Route path="/producto/:productId" element={<ProductoDetalle />} />
-          <Route path="/ofertas" element={<Ofertas />} />
-          <Route path="/productos" element={<Productos />} />
-          <Route path="/carrito" element={<CarritoPage />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <CartProvider>
+        <Toaster />
+        <Sonner position="top-right" expand={true} closeButton={true} />
+        <BrowserRouter>
+          <Carrito />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/categoria/:categoryId" element={<Categoria />} />
+            <Route path="/producto/:productId" element={<ProductoDetalle />} />
+            <Route path="/ofertas" element={<Ofertas />} />
+            <Route path="/productos" element={<Productos />} />
+            <Route path="/carrito" element={<CarritoPage />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

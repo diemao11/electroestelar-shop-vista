@@ -3,7 +3,8 @@ import React from 'react';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '@/context/CartContext';
 
 interface Product {
   id: number;
@@ -64,8 +65,20 @@ const formatPrice = (price: number) => {
 };
 
 const FeaturedProducts = () => {
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+
   const handleAddToCart = (product: Product) => {
+    addToCart({
+      id: product.id,
+      nombre: product.name,
+      precio: product.price,
+      imagen: product.image,
+      cantidad: 1
+    });
+    
     toast.success(`${product.name} agregado al carrito`);
+    navigate('/carrito');
   };
 
   const handleAddToWishlist = (product: Product) => {
