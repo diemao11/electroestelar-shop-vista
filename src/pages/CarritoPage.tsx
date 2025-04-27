@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -110,9 +109,11 @@ const CarritoPage = () => {
                     Seguir comprando
                   </Button>
                 </Link>
-                <Button className="w-full">
-                  Continuar con la compra
-                </Button>
+                <Link to="/checkout">
+                  <Button className="w-full">
+                    Continuar con la compra
+                  </Button>
+                </Link>
               </div>
             </div>
 

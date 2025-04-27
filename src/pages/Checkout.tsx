@@ -187,8 +187,29 @@ const Checkout = () => {
                 "flex items-center space-x-2 rounded-lg border p-4",
                 "hover:bg-gray-50 [&:has([data-state=checked])]:bg-gray-50"
               )}>
+                <RadioGroupItem value="tarjeta" id="tarjeta" />
+                <Label htmlFor="tarjeta" className="flex-grow">Tarjeta de Crédito</Label>
+              </div>
+              <div className={cn(
+                "flex items-center space-x-2 rounded-lg border p-4",
+                "hover:bg-gray-50 [&:has([data-state=checked])]:bg-gray-50"
+              )}>
                 <RadioGroupItem value="sistecredito" id="sistecredito" />
                 <Label htmlFor="sistecredito" className="flex-grow">Crédito Sistecredito</Label>
+              </div>
+              <div className={cn(
+                "flex items-center space-x-2 rounded-lg border p-4",
+                "hover:bg-gray-50 [&:has([data-state=checked])]:bg-gray-50"
+              )}>
+                <RadioGroupItem value="adi" id="adi" />
+                <Label htmlFor="adi" className="flex-grow">Crédito ADI</Label>
+              </div>
+              <div className={cn(
+                "flex items-center space-x-2 rounded-lg border p-4",
+                "hover:bg-gray-50 [&:has([data-state=checked])]:bg-gray-50"
+              )}>
+                <RadioGroupItem value="sumapay" id="sumapay" />
+                <Label htmlFor="sumapay" className="flex-grow">Crédito Suma Pay</Label>
               </div>
               <div className={cn(
                 "flex items-center space-x-2 rounded-lg border p-4",
